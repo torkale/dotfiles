@@ -1,7 +1,24 @@
 [user]
-	name = CHANGE
-	email = CHANGE
+	name = torkale
+  email = torkale@gmail.com
 [github]
-	user = CHANGE
+  name = Tor Ivry
+  email = torkale@gmail.com
+  user = torkale
+[hub]
+  protocol = https
+[alias]
+  aa = add --all
+[credential]
+	helper = osxkeychain
 [heroku]
-	account = CHANGE
+	account = my
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[merge]
+	tool = diffmerge
+[mergetool "diffmerge"]
+	trustExitCode = true
+	cmd = /usr/local/bin/diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"

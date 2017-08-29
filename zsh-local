@@ -2,9 +2,10 @@ alias bb="afplay /System/Library/Sounds/Glass.aiff"
 
 alias h=heroku
 alias hh="heroku help"
-alias aria='aria2c -s 10 -x 10 -k 1M'
+alias aria='aria2c -s 14 -x 14 -k 1M'
 
-prompt fancy
+alias be="bundle exec"
+alias bi="bundle install"
 
 NVMRC=~/.nvm/nvm.sh
 if [ -e ${NVMRC} ]; then
@@ -18,3 +19,67 @@ export RUBY_HEAP_FREE_MIN=500000
 export RUBY_HEAP_SLOTS_INCREMENT=1000000
 export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1
 export RUBY_GC_MALLOC_LIMIT=100000000
+export RUBY_GC_HEAP_INIT_SLOTS=1000000
+
+source /usr/local/opt/rbenv/completions/rbenv.zsh
+
+export GOROOT=/usr/local/opt/go/libexec
+export GOPATH="/$HOME/go"
+export PATH=$PATH:$GOROOT/bin
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:/usr/local/sbin
+export PATH="$HOME/.node/bin:$PATH"
+export PATH="$HOME/.npm/bin:$PATH"
+export PATH="$HOME/.npm-packages/bin:$PATH"
+
+export PATH=$PATH:/Users/torkale/nanit/cli/bin
+
+export LANG=en_US.UTF-8
+export LOCALE=UTF-8
+
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='mvim'
+fi
+
+export LANG=en_US.UTF-8
+
+ssh-add ~/keys/knife.pem &>/dev/null
+export HADOOP_HOME=/usr/local/Cellar/hadoop/2.4.1
+export HIVE_HOME=/usr/local/Cellar/hive/0.13.1/libexec
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home"
+export PIG_HOME=/usr/local/Cellar/pig/0.12.0
+export PIG_CLASSPATH="$PIG_HOME/lib:$PIG_CLASSPATH"
+
+eval "$(rbenv init -)"
+
+deploy () {
+	local project=$(basename $(pwd)) 
+	local env=$1 
+	if [ -z $env ]
+	then
+		env=staging 
+	else
+		if [ "$env" != "staging" ] && [ "$env" != "production" ]
+		then
+			echo "Illegal environment: $env"
+			return 1
+		fi
+	fi
+	local branch=$(git_current_branch) 
+	echo -n "Deploy branch $branch of $project to $env? [Y/n] "
+	read REPLY
+	if [[ "$REPLY" =~ ^[Yy]$ ]] || [ -z "$REPLY" ]
+	then
+		echo "Sending deploy message..."
+		curl -G "https://slack.com/api/chat.postMessage?token=$SLACK_TOKEN&channel=$SLACK_DEPLOYMENT_GROUP_ID&as_user=true" --data-urlencode "text=@nina deploy $project/$branch to $env"
+	else
+		echo "Aborted"
+	fi
+}
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+
+source ~/.dot/auth

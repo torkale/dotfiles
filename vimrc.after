@@ -1,17 +1,44 @@
-"set guifont=Inconsolata-dz\ for\ Powerline:h16
-"set guifont=Monaco:h16
-set guifont=Mensch\ Regular\ for\ Powerline:h16
+set guifont=Inconsolata-dz\ for\ Powerline:h14
+"set guifont=Mensch\ for\ Powerline\ 10
 let g:Powerline_symbols = 'fancy'
 "let g:Powerline_symbols = 'compatible'
 
-set cul
-set foldcolumn=4
+imap jj <ESC>
 
-if has('gui_running')
-  set background=dark
-else
-  set background=dark
-end
-"colorscheme solarized
-"colorscheme buttercream
+set cul
+set smartindent
+set autoindent
+set expandtab
+set softtabstop=2
+set shiftwidth=2
+set clipboard=unnamed
 colorscheme vividchalk
+"set guifont=DejaVu\ Sans\ Mono\ 10.8
+
+filetype off
+filetype plugin indent off
+set runtimepath+=$GOROOT/misc/vim
+filetype plugin indent on
+syntax on
+
+set clipboard=unnamed
+
+" We have to have a winheight bigger than we want to set winminheight. But if
+" we set winheight to be huge before winminheight, the winminheight set will
+" fail.
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+
+map <leader>mw :set lines=999 columns=999<cr>
+" Run this file
+map <leader>tf :call RunCurrentSpecFile()<cr>
+" Run only the example under the cursor
+map <leader>ts :call RunNearestSpec()<cr>
+" Run all test files
+map <leader>tl :call RunLastSpec()<cr>
+
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
+
+vnoremap <silent> s //e<C-r>=&selection=='exclusive'?'+1':''<CR><CR>
+    \:<C-u>call histdel('search',-1)<Bar>let @/=histget('search',-1)<CR>gv
+omap s :normal vs<CR>
