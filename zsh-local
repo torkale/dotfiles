@@ -56,34 +56,10 @@ export PIG_CLASSPATH="$PIG_HOME/lib:$PIG_CLASSPATH"
 
 eval "$(rbenv init -)"
 
-deploy () {
-	local project=$(basename $(pwd)) 
-	local env=$1 
-	if [ -z $env ]
-	then
-		env=staging 
-	else
-		if [ "$env" != "staging" ] && [ "$env" != "production" ]
-		then
-			echo "Illegal environment: $env"
-			return 1
-		fi
-	fi
-	local branch=$(git_current_branch) 
-	echo -n "Deploy branch $branch of $project to $env? [Y/n] "
-	read REPLY
-	if [[ "$REPLY" =~ ^[Yy]$ ]] || [ -z "$REPLY" ]
-	then
-		echo "Sending deploy message..."
-		curl -G "https://slack.com/api/chat.postMessage?token=$SLACK_TOKEN&channel=$SLACK_DEPLOYMENT_GROUP_ID&as_user=true" --data-urlencode "text=@nina deploy $project/$branch to $env"
-	else
-		echo "Aborted"
-	fi
-}
-
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
 export NANIT_CLI_OUTPUT_FORMAT="pretty"
 
+source ~/sources/devops/nanit-scripts/slack-deploy.sh
 source ~/.dot/auth
