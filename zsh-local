@@ -53,7 +53,6 @@ export HIVE_HOME=/usr/local/Cellar/hive/0.13.1/libexec
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home"
 export PIG_HOME=/usr/local/Cellar/pig/0.12.0
 export PIG_CLASSPATH="$PIG_HOME/lib:$PIG_CLASSPATH"
-export RHONDA_FTP_PASSWORD="633e5Ksf4_"
 
 eval "$(rbenv init -)"
 
